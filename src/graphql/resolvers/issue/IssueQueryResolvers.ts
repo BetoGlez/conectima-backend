@@ -1,11 +1,11 @@
 import { GoogleSpreadsheetRow } from "google-spreadsheet";
 import { Arg, Query, Resolver } from "type-graphql";
 
-import { TrackingSheetIssue } from "../../../../models/tracking-sheet.model";
-import { parseCommaNumber } from "../../../../utils/common-functions";
-import { getSheetDocument } from "../../../../utils/google-sheets";
-import { Issue } from "../../../entities/Issue";
-import { GetIssuesInput } from "../input/GetIssuesInput";
+import { TrackingSheetIssue } from "../../../models/tracking-sheet.model";
+import { parseCommaNumber } from "../../../utils/common-functions";
+import { getSheetDocument } from "../../../utils/google-sheets";
+import { Issue } from "../../entities/Issue";
+import { GetIssuesInput } from "./input/GetIssuesInput";
 
 @Resolver()
 export class IssueQueryResolver {

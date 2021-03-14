@@ -7,7 +7,7 @@ import dotenv from "dotenv";
 dotenv.config();
 
 import { ApiConstants } from "./api.constants";
-import { IssueQueryResolver } from "./graphql/resolvers/issue/queries/IssueQueryResolvers";
+import { IssueQueryResolver } from "./graphql/resolvers/issue/IssueQueryResolvers";
 
 const main = async () => {
     try {
