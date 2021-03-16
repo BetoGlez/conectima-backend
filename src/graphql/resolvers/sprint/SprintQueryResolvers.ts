@@ -1,11 +1,10 @@
-import { GoogleSpreadsheetRow, GoogleSpreadsheetWorksheet } from "google-spreadsheet";
+import { GoogleSpreadsheetWorksheet } from "google-spreadsheet";
 import { Arg, Query, Resolver } from "type-graphql";
 
 import { ApiConstants } from "../../../api.constants";
-import { TrackingSheetIssue } from "../../../models/tracking-sheet.model";
-import { calculateWorkDays, getValueAfterColon, parseCommaNumber } from "../../../utils/common-functions";
-import { getSheetDocument } from "../../../utils/google-sheets";
+import { getCellNumber, getCellString, getSheetDocument } from "../../../utils/google-sheets";
 import { Sprint } from "../../entities/Sprint";
+import { SprintStatistics } from "../../entities/SprintStatistics";
 
 @Resolver()
 export class SprintQueryResolver {
@@ -22,25 +21,28 @@ export class SprintQueryResolver {
     }
 
     private async composeSprint(sheet: GoogleSpreadsheetWorksheet): Promise<Sprint> {
-        const rows = await sheet.getRows();
-
-        const startDateCell = `A${rows.length}`;
-        const releaseDateCell = `A${rows.length + 1}`;
-        await sheet.loadCells(`${startDateCell}:${releaseDateCell}`);
-        const startDate = getValueAfterColon(sheet.getCellByA1(startDateCell).value as string);
-        const releaseDate = getValueAfterColon(sheet.getCellByA1(releaseDateCell).value as string);
-
-        const duration = calculateWorkDays(startDate, releaseDate);
-        const originalEstimation = rows.filter(
-            (row: GoogleSpreadsheetRow | TrackingSheetIssue) => row.Issue === ApiConstants.RESULT_ISSUE_TEXT
-        )[0].OE as string;
-
+        const sprintStats = await this.composeSprintStats(sheet);
         return {
             version: sheet.title,
-            startDate,
-            releaseDate,
-            duration,
-            storyPoints: parseCommaNumber(originalEstimation)
+            statistics: sprintStats
         } as Sprint;
+    }
+
+    private async composeSprintStats(sheet: GoogleSpreadsheetWorksheet): Promise<SprintStatistics> {
+        await sheet.loadCells(ApiConstants.trackingSheet.SPRINT_STATS_CELL_RANGE);
+        return {
+            originalEstimationSp: getCellNumber(sheet, ApiConstants.trackingSheet.ORIGINAL_ESTIMATION_SP_CELL),
+            originalEstimationHours: getCellNumber(sheet, ApiConstants.trackingSheet.ORIGINAL_ESTIMATION_HOURS_CELL),
+            devEstimationSp: getCellNumber(sheet, ApiConstants.trackingSheet.DEV_ESTIMATION_SP_CELL),
+            devEstimationHours: getCellNumber(sheet, ApiConstants.trackingSheet.DEV_ESTIMATION_HOURS_CELL),
+            startDate: getCellString(sheet, ApiConstants.trackingSheet.START_DATE_CELL),
+            releaseDate: getCellString(sheet, ApiConstants.trackingSheet.RELEASE_DATE_CELL),
+            workHoursPerDay: getCellNumber(sheet, ApiConstants.trackingSheet.WORK_HOURS_PER_DAY_CELL),
+            remainingWorkDays: getCellNumber(sheet, ApiConstants.trackingSheet.WORK_DAYS_UNTIL_FINISH_CELL),
+            originalDeviationPercentage: getCellNumber(sheet, ApiConstants.trackingSheet.ORIGINAL_DEVIATION_CELL),
+            devDeviationPercentage: getCellNumber(sheet, ApiConstants.trackingSheet.DEV_DEVIATION_CELL),
+            originalProgressPercentage: getCellNumber(sheet, ApiConstants.trackingSheet.ORIGINAL_PROGRESS_CELL),
+            devProgressPercentage: getCellNumber(sheet, ApiConstants.trackingSheet.DEV_PROGRESS_CELL)
+        } as SprintStatistics;
     }
 }

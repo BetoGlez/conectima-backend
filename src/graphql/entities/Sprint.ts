@@ -1,19 +1,12 @@
-import { Field, Float, ObjectType } from "type-graphql";
+import { Field, ObjectType } from "type-graphql";
+
+import { SprintStatistics } from "./SprintStatistics";
 
 @ObjectType()
 export class Sprint {
     @Field()
-    public version: string;
+    version: string;
 
-    @Field({nullable: true})
-    public startDate: string;
-
-    @Field({nullable: true})
-    public releaseDate: string;
-
-    @Field(() => Float)
-    public duration: number;
-
-    @Field(() => Float)
-    public storyPoints: number;
+    @Field(() => SprintStatistics)
+    statistics: SprintStatistics;
 }
