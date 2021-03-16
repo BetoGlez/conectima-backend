@@ -8,11 +8,12 @@ dotenv.config();
 
 import { ApiConstants } from "./api.constants";
 import { IssueQueryResolver } from "./graphql/resolvers/issue/IssueQueryResolvers";
+import { SprintQueryResolver } from "./graphql/resolvers/sprint/SprintQueryResolvers";
 
 const main = async () => {
     try {
         const schema = await buildSchema({
-            resolvers: [ IssueQueryResolver ]
+            resolvers: [ SprintQueryResolver, IssueQueryResolver ]
         });
 
         const apolloServer = new ApolloServer({ schema });
