@@ -21,3 +21,13 @@ export const getCellNumber = (sheet: GoogleSpreadsheetWorksheet, cell: string): 
 export const getCellString = (sheet: GoogleSpreadsheetWorksheet, cell: string): string => {
     return sheet.getCellByA1(cell).value as string;
 };
+
+export const getNextCellInRow = (cell: string) => {
+    let nextCellInRow = "";
+    const cellRow = cell.match(/\d+/g)?.map(Number)[0];
+    if (cellRow) {
+        const cellColumn = cell.slice(0, cell.indexOf(cellRow.toString()));
+        nextCellInRow = cellColumn + (cellRow + 1);
+    }
+    return nextCellInRow;
+};

@@ -21,6 +21,19 @@ export class ApiConstants {
         ORIGINAL_DEVIATION_CELL: "Q16",
         DEV_DEVIATION_CELL: "Q17",
         ORIGINAL_PROGRESS_CELL: "Q18",
-        DEV_PROGRESS_CELL: "Q19"
+        DEV_PROGRESS_CELL: "Q19",
+        SPRINT_ISSUES_CELL_RANGE: "A1:N50",
+        FIRST_ISSUE_TITLE_CELL: "A1",
+        FIRST_ISSUE_O_CELL: "B1",
+        FIRST_ISSUE_ML_CELL: "C1",
+        FIRST_ISSUE_P_CELL: "D1",
+        FIRST_ISSUE_OE_CELL: "G1",
+        FIRST_ISSUE_PROGRESS_CELL: "I1",
+        FIRST_ISSUE_RESPONSIBLE_CELL: "L1",
+        FIRST_ISSUE_CLIENT_VALUE_CELL: "M1",
+        FIRST_ISSUE_PRIORITY_CELL: "N1",
+        LAST_ISSUE_TITLE: "Total"
     };
+
+    public static readonly MAX_ISSUES_PER_SPRINT = 50;
 }

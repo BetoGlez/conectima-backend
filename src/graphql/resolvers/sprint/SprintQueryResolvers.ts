@@ -2,7 +2,8 @@ import { GoogleSpreadsheetWorksheet } from "google-spreadsheet";
 import { Arg, Query, Resolver } from "type-graphql";
 
 import { ApiConstants } from "../../../api.constants";
-import { getCellNumber, getCellString, getSheetDocument } from "../../../utils/google-sheets";
+import { getCellNumber, getCellString, getNextCellInRow, getSheetDocument } from "../../../utils/google-sheets";
+import { Issue } from "../../entities/Issue";
 import { Sprint } from "../../entities/Sprint";
 import { SprintStatistics } from "../../entities/SprintStatistics";
 
@@ -22,9 +23,11 @@ export class SprintQueryResolver {
 
     private async composeSprint(sheet: GoogleSpreadsheetWorksheet): Promise<Sprint> {
         const sprintStats = await this.composeSprintStats(sheet);
+        const sprintIssues = await this.composeSprintIssues(sheet);
         return {
             version: sheet.title,
-            statistics: sprintStats
+            statistics: sprintStats,
+            issues: sprintIssues
         } as Sprint;
     }
 
@@ -44,5 +47,49 @@ export class SprintQueryResolver {
             originalProgressPercentage: getCellNumber(sheet, ApiConstants.trackingSheet.ORIGINAL_PROGRESS_CELL),
             devProgressPercentage: getCellNumber(sheet, ApiConstants.trackingSheet.DEV_PROGRESS_CELL)
         } as SprintStatistics;
+    }
+
+    private async composeSprintIssues(sheet: GoogleSpreadsheetWorksheet): Promise<Array<Issue>> {
+        await sheet.loadCells(ApiConstants.trackingSheet.SPRINT_ISSUES_CELL_RANGE);
+        const sprintIssues = new Array<Issue>();
+        let issueTitleCell = ApiConstants.trackingSheet.FIRST_ISSUE_TITLE_CELL;
+        let issueOpEstimationCell = ApiConstants.trackingSheet.FIRST_ISSUE_O_CELL;
+        let issuePeEstimationCell = ApiConstants.trackingSheet.FIRST_ISSUE_P_CELL;
+        let issueMlEstimationCell = ApiConstants.trackingSheet.FIRST_ISSUE_ML_CELL;
+        let issueOrEstimationCell = ApiConstants.trackingSheet.FIRST_ISSUE_OE_CELL;
+        let issueProgressCell = ApiConstants.trackingSheet.FIRST_ISSUE_PROGRESS_CELL;
+        let issueResponsibleCell = ApiConstants.trackingSheet.FIRST_ISSUE_RESPONSIBLE_CELL;
+        let issueClientValueCell = ApiConstants.trackingSheet.FIRST_ISSUE_CLIENT_VALUE_CELL;
+        let issuePriorityCell = ApiConstants.trackingSheet.FIRST_ISSUE_PRIORITY_CELL;
+        let isValidIssue = true;
+        do {
+            issueTitleCell = getNextCellInRow(issueTitleCell);
+            const issueTitle = getCellString(sheet, issueTitleCell);
+            isValidIssue = !!issueTitle && issueTitle !== ApiConstants.trackingSheet.LAST_ISSUE_TITLE;
+            if (isValidIssue) {
+                issueOpEstimationCell = getNextCellInRow(issueOpEstimationCell);
+                issuePeEstimationCell = getNextCellInRow(issuePeEstimationCell);
+                issueMlEstimationCell = getNextCellInRow(issueMlEstimationCell);
+                issueOrEstimationCell = getNextCellInRow(issueOrEstimationCell);
+                issueProgressCell = getNextCellInRow(issueProgressCell);
+                issueResponsibleCell = getNextCellInRow(issueResponsibleCell);
+                issueClientValueCell = getNextCellInRow(issueClientValueCell);
+                issuePriorityCell = getNextCellInRow(issuePriorityCell);
+                sprintIssues.push({
+                    title: issueTitle,
+                    estimation: {
+                        optimistic: getCellNumber(sheet, issueOpEstimationCell),
+                        pesimistic: getCellNumber(sheet, issuePeEstimationCell),
+                        mostLikely: getCellNumber(sheet, issueMlEstimationCell),
+                        originalEstimation: getCellNumber(sheet, issueOrEstimationCell)
+                    },
+                    progress: getCellNumber(sheet, issueProgressCell),
+                    responsible: getCellString(sheet, issueResponsibleCell),
+                    clientValue: getCellNumber(sheet, issueClientValueCell),
+                    priority: getCellNumber(sheet, issuePriorityCell),
+                });
+            }
+        } while (isValidIssue && sprintIssues.length < ApiConstants.MAX_ISSUES_PER_SPRINT);
+        return sprintIssues;
     }
 }

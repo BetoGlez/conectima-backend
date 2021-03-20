@@ -1,12 +1,16 @@
 import { Field, ObjectType } from "type-graphql";
 
+import { Issue } from "./Issue";
 import { SprintStatistics } from "./SprintStatistics";
 
 @ObjectType()
 export class Sprint {
     @Field()
-    version: string;
+    public version: string;
 
     @Field(() => SprintStatistics)
-    statistics: SprintStatistics;
+    public statistics: SprintStatistics;
+
+    @Field(() => [Issue])
+    public issues: Array<Issue>;
 }
