@@ -8,6 +8,9 @@ export class ApiConstants {
     public static readonly COMMA_CHAR = ",";
     public static readonly DOT_CHAR = ".";
 
+    public static readonly MAX_ISSUES_PER_SPRINT = 50;
+    public static readonly MAX_MEMBERS_PER_SPRINT = 20;
+
     public static readonly trackingSheet = {
         SPRINT_STATS_CELL_RANGE: "P1:R19",
         ORIGINAL_ESTIMATION_SP_CELL: "Q2",
@@ -22,7 +25,7 @@ export class ApiConstants {
         DEV_DEVIATION_CELL: "Q17",
         ORIGINAL_PROGRESS_CELL: "Q18",
         DEV_PROGRESS_CELL: "Q19",
-        SPRINT_ISSUES_CELL_RANGE: "A1:N50",
+        SPRINT_ISSUES_CELL_RANGE: `A1:N${ApiConstants.MAX_ISSUES_PER_SPRINT + 2}`,
         FIRST_ISSUE_TITLE_CELL: "A1",
         FIRST_ISSUE_O_CELL: "B1",
         FIRST_ISSUE_ML_CELL: "C1",
@@ -32,8 +35,10 @@ export class ApiConstants {
         FIRST_ISSUE_RESPONSIBLE_CELL: "L1",
         FIRST_ISSUE_CLIENT_VALUE_CELL: "M1",
         FIRST_ISSUE_PRIORITY_CELL: "N1",
-        LAST_ISSUE_TITLE: "Total"
+        LAST_ISSUE_TITLE: "Total",
+        SPRINT_DEDICATIONS_CELL_RANGE: `T1:V${ApiConstants.MAX_MEMBERS_PER_SPRINT + 1}`,
+        FIRST_DEDICATION_USER_CELL: "T1",
+        FIRST_DEDICATION_CURRENT_HOURS_CELL: "U1",
+        FIRST_DEDICATION_EXPECTED_HOURS_CELL: "V1",
     };
-
-    public static readonly MAX_ISSUES_PER_SPRINT = 50;
 }

@@ -1,5 +1,6 @@
 import { Field, ObjectType } from "type-graphql";
 
+import { Dedication } from "./Dedication";
 import { Issue } from "./Issue";
 import { SprintStatistics } from "./SprintStatistics";
 
@@ -13,4 +14,7 @@ export class Sprint {
 
     @Field(() => [Issue])
     public issues: Array<Issue>;
+
+    @Field(() => [Dedication])
+    public dedications: Array<Dedication>;
 }

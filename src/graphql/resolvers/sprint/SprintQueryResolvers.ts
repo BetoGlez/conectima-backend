@@ -3,6 +3,7 @@ import { Arg, Query, Resolver } from "type-graphql";
 
 import { ApiConstants } from "../../../api.constants";
 import { getCellNumber, getCellString, getNextCellInRow, getSheetDocument } from "../../../utils/google-sheets";
+import { Dedication } from "../../entities/Dedication";
 import { Issue } from "../../entities/Issue";
 import { Sprint } from "../../entities/Sprint";
 import { SprintStatistics } from "../../entities/SprintStatistics";
@@ -24,10 +25,12 @@ export class SprintQueryResolver {
     private async composeSprint(sheet: GoogleSpreadsheetWorksheet): Promise<Sprint> {
         const sprintStats = await this.composeSprintStats(sheet);
         const sprintIssues = await this.composeSprintIssues(sheet);
+        const sprintDedications = await this.composeSprintDedications(sheet);
         return {
             version: sheet.title,
             statistics: sprintStats,
-            issues: sprintIssues
+            issues: sprintIssues,
+            dedications: sprintDedications
         } as Sprint;
     }
 
@@ -91,5 +94,31 @@ export class SprintQueryResolver {
             }
         } while (isValidIssue && sprintIssues.length < ApiConstants.MAX_ISSUES_PER_SPRINT);
         return sprintIssues;
+    }
+
+    private async composeSprintDedications(sheet: GoogleSpreadsheetWorksheet): Promise<Array<Dedication>> {
+        await sheet.loadCells(ApiConstants.trackingSheet.SPRINT_DEDICATIONS_CELL_RANGE);
+        const sprintDedications = new Array<Dedication>();
+        let dedicationUserCell = ApiConstants.trackingSheet.FIRST_DEDICATION_USER_CELL;
+        let dedicationCurrentHoursCell = ApiConstants.trackingSheet.FIRST_DEDICATION_CURRENT_HOURS_CELL;
+        let dedicationExpectedHoursCell = ApiConstants.trackingSheet.FIRST_DEDICATION_EXPECTED_HOURS_CELL;
+
+        let isValidDedication = true;
+        do {
+            dedicationUserCell = getNextCellInRow(dedicationUserCell);
+            const dedicationUser = getCellString(sheet, dedicationUserCell);
+            isValidDedication = !!dedicationUser;
+            if (isValidDedication) {
+                dedicationCurrentHoursCell = getNextCellInRow(dedicationCurrentHoursCell);
+                dedicationExpectedHoursCell = getNextCellInRow(dedicationExpectedHoursCell);
+                sprintDedications.push({
+                    user: dedicationUser,
+                    currentHours: getCellNumber(sheet, dedicationCurrentHoursCell),
+                    expectedHoursPerDay: getCellNumber(sheet, dedicationExpectedHoursCell)
+                });
+            }
+        } while (isValidDedication && sprintDedications.length < ApiConstants.MAX_MEMBERS_PER_SPRINT);
+
+        return sprintDedications;
     }
 }
