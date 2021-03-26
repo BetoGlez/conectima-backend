@@ -10,6 +10,7 @@ import { ApiConstants } from "./api.constants";
 import { ProjectQueryResolvers } from "./graphql/resolvers/project/ProjectQueryResolvers";
 import { IssueQueryResolver } from "./graphql/resolvers/issue/IssueQueryResolvers";
 import { SprintQueryResolver } from "./graphql/resolvers/sprint/SprintQueryResolvers";
+import { formatError } from "./utils/error-format";
 
 const main = async () => {
     try {
@@ -17,7 +18,7 @@ const main = async () => {
             resolvers: [ ProjectQueryResolvers, SprintQueryResolver, IssueQueryResolver ]
         });
 
-        const apolloServer = new ApolloServer({ schema });
+        const apolloServer = new ApolloServer({ schema, formatError });
 
         const server = await apolloServer.listen({ port: process.env.API_PORT || ApiConstants.DEFAULT_API_PORT });
         console.log(`Server running at ${server.url}`);

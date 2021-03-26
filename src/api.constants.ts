@@ -41,4 +41,9 @@ export class ApiConstants {
         FIRST_DEDICATION_CURRENT_HOURS_CELL: "U1",
         FIRST_DEDICATION_EXPECTED_HOURS_CELL: "V1",
     };
+
+    public static readonly errorCodes = {
+        EMPTY_FIELD: "emptyField",
+        INVALID_DATE: "invalidDate"
+    };
 }
