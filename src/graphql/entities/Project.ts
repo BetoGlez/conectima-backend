@@ -1,18 +1,28 @@
 import { Field, ID, ObjectType } from "type-graphql";
 
+import { Dedication } from "./Dedication";
 import { Sprint } from "./Sprint";
 
 @ObjectType()
 export class Project {
     @Field(() => ID)
-    id: string;
+    public id: string;
 
     @Field()
-    name: string;
+    public name: string;
 
     @Field()
-    spreadSheetId: string;
+    public spreadSheetId: string;
 
-    @Field(() => [Sprint])
-    sprints: Array<Sprint>;
+    @Field(() => [Sprint], { nullable: true })
+    public sprints?: Array<Sprint>;
+
+    @Field(() => Sprint, { nullable: true })
+    public activeSprint?: Sprint;
+
+    @Field()
+    public startDate: string;
+
+    @Field(() => [Dedication], { nullable: true })
+    public dedications?: Array<Dedication>;
 }
