@@ -1,6 +1,7 @@
 import "reflect-metadata";
 import { ApolloServer } from "apollo-server";
 import { buildSchema } from "type-graphql";
+import Container from "typedi";
 import dotenv from "dotenv";
 
 // Preloads config before other imports to ensure env variables are available asap
@@ -15,7 +16,8 @@ import { formatError } from "./utils/error-format";
 const main = async () => {
     try {
         const schema = await buildSchema({
-            resolvers: [ ProjectQueryResolvers, SprintQueryResolver, IssueQueryResolver ]
+            resolvers: [ ProjectQueryResolvers, SprintQueryResolver, IssueQueryResolver ],
+            container: Container
         });
 
         const apolloServer = new ApolloServer({ schema, formatError });
