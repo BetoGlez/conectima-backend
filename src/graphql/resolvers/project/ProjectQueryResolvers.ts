@@ -1,37 +1,30 @@
 import { Arg, Mutation, Query, Resolver } from "type-graphql";
+import { Service } from "typedi";
 
+import { ProjectsService } from "../../../services/projects.service";
 import { Project } from "../../entities/Project";
 import { CreateProjectInput } from "./input/CreateProjectInput";
 
+@Service()
 @Resolver()
 export class ProjectQueryResolvers {
 
-    private projects = new Array<Project>();
+    public constructor(private projectsSrv: ProjectsService) {}
 
     @Query(() => [Project], { nullable: true })
     public async getProjects(): Promise<Array<Project> | null> {
-        // TODO: return projects from the database
-        return this.projects;
+        return this.projectsSrv.getProjects();
     }
 
     @Query(() => Project, { nullable: true })
     public async getProject(@Arg("projectId") projectId: string): Promise<Project | null> {
-        // TODO: Do the search in the database
-        return this.projects.filter(project => project.id === projectId)[0];
+        return this.projectsSrv.getProject(projectId);
     }
 
     @Mutation(() => Project)
     public async createProject(
         @Arg("createProjectInput") { name, spreadSheetId, startDate }: CreateProjectInput
     ): Promise<Project> {
-        const newProject = {
-            id: (Math.random() * 100).toFixed(0).toString(),
-            name,
-            spreadSheetId,
-            startDate
-        } as Project;
-        // TODO: Implement the logic to save in DB and use the real id
-        this.projects.push(newProject);
-        return newProject;
+        return this.projectsSrv.createProject({ name, spreadSheetId, startDate } as Project);
     }
 }

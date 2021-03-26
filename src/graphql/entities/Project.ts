@@ -6,7 +6,7 @@ import { Sprint } from "./Sprint";
 @ObjectType()
 export class Project {
     @Field(() => ID)
-    public id: string;
+    public id?: string;
 
     @Field()
     public name: string;
