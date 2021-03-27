@@ -5,12 +5,24 @@ import { Sprint } from "../graphql/entities/Sprint";
 import { SprintStatistics } from "../graphql/entities/SprintStatistics";
 import { Dedication } from "../graphql/entities/Dedication";
 import { Issue } from "../graphql/entities/Issue";
-import { getCellNumber, getCellString, getNextCellInRow } from "../utils/google-sheets";
+import { getCellNumber, getCellString, getNextCellInRow, getSheetDocument } from "../utils/google-sheets";
 import { ApiConstants } from "../api.constants";
 
 @Service()
-export class SprintsService {
-    public async composeSprint(sheet: GoogleSpreadsheetWorksheet): Promise<Sprint> {
+export class SheetSprintsService {
+
+    public async getSprints(sheetId: string): Promise<Array<Sprint>> {
+        const doc = await getSheetDocument(sheetId);
+        const sprintsPromises = new Array<Promise<Sprint>>();
+        for (let i = 0; i < doc.sheetCount; i++) {
+            const sheet = doc.sheetsByIndex[i];
+            sprintsPromises.push(this.composeSprint(sheet));
+        }
+        const sprints = await Promise.all(sprintsPromises);
+        return sprints;
+    }
+
+    private async composeSprint(sheet: GoogleSpreadsheetWorksheet): Promise<Sprint> {
         const sprintStats = await this.composeSprintStats(sheet);
         const sprintIssues = await this.composeSprintIssues(sheet);
         const sprintDedications = await this.composeSprintDedications(sheet);

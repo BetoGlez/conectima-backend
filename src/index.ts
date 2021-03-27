@@ -15,6 +15,7 @@ import { formatError } from "./utils/error-format";
 
 const main = async () => {
     try {
+        Container.reset();
         const schema = await buildSchema({
             resolvers: [ ProjectQueryResolvers, SprintQueryResolver, IssueQueryResolver ],
             container: Container

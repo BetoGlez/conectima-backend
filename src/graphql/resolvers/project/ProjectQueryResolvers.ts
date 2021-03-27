@@ -13,18 +13,23 @@ export class ProjectQueryResolvers {
 
     @Query(() => [Project], { nullable: true })
     public async getProjects(): Promise<Array<Project> | null> {
-        return this.projectsSrv.getProjects();
+        return await this.projectsSrv.getProjects();
     }
 
     @Query(() => Project, { nullable: true })
     public async getProject(@Arg("projectId") projectId: string): Promise<Project | null> {
-        return this.projectsSrv.getProject(projectId);
+        return await this.projectsSrv.getProject(projectId);
     }
 
     @Mutation(() => Project)
     public async createProject(
         @Arg("createProjectInput") { name, spreadSheetId, startDate }: CreateProjectInput
     ): Promise<Project> {
-        return this.projectsSrv.createProject({ name, spreadSheetId, startDate } as Project);
+        return await this.projectsSrv.createProject({ name, spreadSheetId, startDate } as Project);
+    }
+
+    @Mutation(() => Project, { nullable: true })
+    public async syncProject(@Arg("projectId") projectId: string): Promise<Project | null> {
+        return await this.projectsSrv.syncProject(projectId);
     }
 }
