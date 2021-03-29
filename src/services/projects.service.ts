@@ -4,6 +4,7 @@ import moment from "moment";
 import { Project } from "../graphql/entities/Project";
 import { SheetSprintsService } from "./sheet-sprints.service";
 import { ApiConstants } from "../api.constants";
+import { ProjectIdInput } from "../graphql/input/ProjectIdInput";
 
 @Service()
 export class ProjectsService {
@@ -24,7 +25,7 @@ export class ProjectsService {
         return newProject;
     }
 
-    public async syncProject(projectId: string): Promise<Project | null> {
+    public async syncProject({ projectId }: ProjectIdInput): Promise<Project | null> {
         // TODO: verify in the database the project exists
         let projectToSync = this.projects.filter(project => project.id === projectId)[0];
         if (projectToSync) {
@@ -51,7 +52,7 @@ export class ProjectsService {
         return this.projects;
     }
 
-    public async getProject(projectId: string): Promise<Project | null> {
+    public async getProject({ projectId }: ProjectIdInput): Promise<Project | null> {
          // TODO: Do the search in the database
          return this.projects.filter(project => project.id === projectId)[0];
     }

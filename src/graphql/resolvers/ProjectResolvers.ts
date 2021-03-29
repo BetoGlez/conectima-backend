@@ -4,6 +4,7 @@ import { Service } from "typedi";
 import { ProjectsService } from "../../services/projects.service";
 import { Project } from "../entities/Project";
 import { CreateProjectInput } from "../input/CreateProjectInput";
+import { ProjectIdInput } from "../input/ProjectIdInput";
 
 @Service()
 @Resolver()
@@ -17,8 +18,8 @@ export class ProjectResolvers {
     }
 
     @Query(() => Project, { nullable: true })
-    public async getProject(@Arg("projectId") projectId: string): Promise<Project | null> {
-        return await this.projectsSrv.getProject(projectId);
+    public async getProject(@Arg("projectIdInput") projectIdInput: ProjectIdInput): Promise<Project | null> {
+        return await this.projectsSrv.getProject(projectIdInput);
     }
 
     @Mutation(() => Project)
@@ -29,7 +30,7 @@ export class ProjectResolvers {
     }
 
     @Mutation(() => Project, { nullable: true })
-    public async syncProject(@Arg("projectId") projectId: string): Promise<Project | null> {
-        return await this.projectsSrv.syncProject(projectId);
+    public async syncProject(@Arg("projectIdInput") projectIdInput: ProjectIdInput): Promise<Project | null> {
+        return await this.projectsSrv.syncProject(projectIdInput);
     }
 }
