@@ -2,6 +2,7 @@ import "reflect-metadata";
 import { ApolloServer } from "apollo-server";
 import { buildSchema } from "type-graphql";
 import Container from "typedi";
+import mongoose from "mongoose";
 import dotenv from "dotenv";
 
 // Preloads config before other imports to ensure env variables are available asap
@@ -14,6 +15,8 @@ import { formatError } from "./utils/error-format";
 
 const main = async () => {
     try {
+        await mongoose.connect(ApiConstants.MONGO_DB_URI, { useNewUrlParser: true, useUnifiedTopology: true });
+
         Container.reset();
         const schema = await buildSchema({
             resolvers: [ ProjectResolvers, SprintResolvers ],

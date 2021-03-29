@@ -1,5 +1,6 @@
 export class ApiConstants {
     public static readonly DEFAULT_API_PORT = 5000;
+    public static readonly MONGO_DB_URI = process.env.MONGO_DB_URI || "";
 
     public static readonly DATE_FORMAT = "DD/MM/YYYY";
 
