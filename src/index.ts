@@ -25,7 +25,7 @@ const main = async () => {
 
         const apolloServer = new ApolloServer({ schema, formatError });
 
-        const server = await apolloServer.listen({ port: process.env.API_PORT || ApiConstants.DEFAULT_API_PORT });
+        const server = await apolloServer.listen({ port: ApiConstants.API_PORT });
         console.log(`Server running at ${server.url}`);
     } catch(err) {
         console.error("Error initializing server: ", err);
