@@ -11,7 +11,7 @@ import { ApiConstants } from "../api.constants";
 @Service()
 export class SheetSprintsService {
 
-    public async getSprints(sheetId: string): Promise<Array<Sprint>> {
+    public async composeSprintsFromSheet(sheetId: string): Promise<Array<Sprint>> {
         const doc = await getSheetDocument(sheetId);
         const sprintsPromises = new Array<Promise<Sprint>>();
         for (let i = 0; i < doc.sheetCount; i++) {

@@ -1,9 +1,9 @@
 import { Arg, Mutation, Query, Resolver } from "type-graphql";
 import { Service } from "typedi";
 
-import { ProjectsService } from "../../../services/projects.service";
-import { Project } from "../../entities/Project";
-import { CreateProjectInput } from "./input/CreateProjectInput";
+import { ProjectsService } from "../../services/projects.service";
+import { Project } from "../entities/Project";
+import { CreateProjectInput } from "../input/CreateProjectInput";
 
 @Service()
 @Resolver()

@@ -1,8 +1,8 @@
 import { Field, InputType } from "type-graphql";
 import { IsNotEmpty } from "class-validator";
 
-import { ApiConstants } from "../../../../api.constants";
-import { IsDateFormatValid } from "../../../../validators/isDateFormatValid";
+import { ApiConstants } from "../../api.constants";
+import { IsDateFormatValid } from "../../validators/isDateFormatValid";
 
 @InputType()
 export class CreateProjectInput {

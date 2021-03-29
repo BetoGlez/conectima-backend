@@ -28,7 +28,7 @@ export class ProjectsService {
         // TODO: verify in the database the project exists
         let projectToSync = this.projects.filter(project => project.id === projectId)[0];
         if (projectToSync) {
-            const projectSprints = await this.sheetSprintsSrv.getSprints(projectToSync.spreadSheetId);
+            const projectSprints = await this.sheetSprintsSrv.composeSprintsFromSheet(projectToSync.spreadSheetId);
             if (projectSprints && projectSprints.length > 0) {
                 const sprintInCurrentDateRange = projectSprints.filter(
                     sprint => this.isDateCurrentDateInRange(sprint.statistics.startDate, sprint.statistics.releaseDate))[0];

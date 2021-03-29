@@ -8,8 +8,8 @@ import dotenv from "dotenv";
 dotenv.config();
 
 import { ApiConstants } from "./api.constants";
-import { ProjectResolvers } from "./graphql/resolvers/project/ProjectResolvers";
-import { SprintResolvers } from "./graphql/resolvers/sprint/SprintResolvers";
+import { ProjectResolvers } from "./graphql/resolvers/ProjectResolvers";
+import { SprintResolvers } from "./graphql/resolvers/SprintResolvers";
 import { formatError } from "./utils/error-format";
 
 const main = async () => {
