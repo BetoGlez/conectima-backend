@@ -7,7 +7,7 @@ import { CreateProjectInput } from "./input/CreateProjectInput";
 
 @Service()
 @Resolver()
-export class ProjectQueryResolvers {
+export class ProjectResolvers {
 
     public constructor(private projectsSrv: ProjectsService) {}
 

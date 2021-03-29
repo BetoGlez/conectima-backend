@@ -8,16 +8,15 @@ import dotenv from "dotenv";
 dotenv.config();
 
 import { ApiConstants } from "./api.constants";
-import { ProjectQueryResolvers } from "./graphql/resolvers/project/ProjectQueryResolvers";
-import { IssueQueryResolver } from "./graphql/resolvers/issue/IssueQueryResolvers";
-import { SprintQueryResolver } from "./graphql/resolvers/sprint/SprintQueryResolvers";
+import { ProjectResolvers } from "./graphql/resolvers/project/ProjectResolvers";
+import { SprintResolvers } from "./graphql/resolvers/sprint/SprintResolvers";
 import { formatError } from "./utils/error-format";
 
 const main = async () => {
     try {
         Container.reset();
         const schema = await buildSchema({
-            resolvers: [ ProjectQueryResolvers, SprintQueryResolver, IssueQueryResolver ],
+            resolvers: [ ProjectResolvers, SprintResolvers ],
             container: Container
         });
 
