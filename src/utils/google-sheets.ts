@@ -3,6 +3,10 @@ import { GoogleSpreadsheet, GoogleSpreadsheetWorksheet } from "google-spreadshee
 import sheetCredentials from "../keys/client_secret.json";
 import { parseCommaNumber } from "./common-functions";
 
+export const isValidSheetId = async (sheetId: string): Promise<boolean> => {
+    return !!(await getSheetDocument(sheetId));
+};
+
 export const getSheetDocument = async (sheetId: string): Promise<GoogleSpreadsheet> => {
     const doc = new GoogleSpreadsheet(sheetId);
     await doc.useServiceAccountAuth(sheetCredentials);

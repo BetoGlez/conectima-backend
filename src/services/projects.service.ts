@@ -1,10 +1,12 @@
 import { Service } from "typedi";
+import { UserInputError } from "apollo-server-errors";
 import moment from "moment";
 
-import { Project } from "../graphql/entities/Project";
+import { Project, ProjectModel } from "../graphql/entities/Project";
 import { SheetSprintsService } from "./sheet-sprints.service";
 import { ApiConstants } from "../api.constants";
 import { ProjectIdInput } from "../graphql/input/ProjectIdInput";
+import { isValidSheetId } from "../utils/google-sheets";
 
 @Service()
 export class ProjectsService {
@@ -14,14 +16,24 @@ export class ProjectsService {
     public constructor(private sheetSprintsSrv: SheetSprintsService) {}
 
     public async createProject(project: Project): Promise<Project> {
-        const newProject = {
-            id: (Math.random() * 100).toFixed(0).toString(),
-            name: project.name,
-            spreadSheetId: project.spreadSheetId,
-            startDate: project.startDate
-        } as Project;
-        // TODO: Implement the logic to save in DB and use the real id
-        this.projects.push(newProject);
+        const projectInDb = await ProjectModel.findOne({ name: project.name });
+        if (projectInDb) {
+            throw new UserInputError("A project with the same name already exists", {
+                errorCodes: [ ApiConstants.errorCodes.DUPLICATED_PROJECT_NAME ]
+            });
+        }
+        let isValidSheet = false;
+        try {
+            isValidSheet = await isValidSheetId(project.spreadSheetId);
+        } catch (err) {
+            console.error("Invalid sheet Id: ", err.message);
+        }
+        if (!isValidSheet) {
+            throw new UserInputError("Could not link sheet using the specified id", {
+                errorCodes: [ ApiConstants.errorCodes.ERROR_CONNECTING_SPREADSHEET ]
+            });
+        }
+        const newProject = await ProjectModel.create(project);
         return newProject;
     }
 

@@ -19,6 +19,7 @@ export class AuthService {
             throw new AuthenticationError(ApiConstants.errorCodes.INVALID_CREDENTIALS );
         }
         const authToken = generateToken(user);
+        console.log("User authenticated: ", user.username);
         return {
             id: user.id,
             email: user.email,

@@ -52,6 +52,8 @@ export class ApiConstants {
         INVALID_EMAIL: "invalidEmail",
         SHORT_PASSWORD: "shortPassword",
         USER_NOT_FOUND: "userNotFound",
-        INVALID_CREDENTIALS: "invalidCredentials"
+        INVALID_CREDENTIALS: "invalidCredentials",
+        DUPLICATED_PROJECT_NAME: "duplicatedProjectName",
+        ERROR_CONNECTING_SPREADSHEET: "errorConnectingSheet"
     };
 }

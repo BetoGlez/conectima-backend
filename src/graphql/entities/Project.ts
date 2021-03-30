@@ -1,4 +1,5 @@
 import { Field, ID, ObjectType } from "type-graphql";
+import { prop, getModelForClass } from "@typegoose/typegoose";
 
 import { Dedication } from "./Dedication";
 import { Sprint } from "./Sprint";
@@ -9,9 +10,11 @@ export class Project {
     public id?: string;
 
     @Field()
+    @prop({ required: true })
     public name: string;
 
     @Field()
+    @prop({ required: true })
     public spreadSheetId: string;
 
     @Field(() => [Sprint], { nullable: true })
@@ -21,8 +24,11 @@ export class Project {
     public activeSprint?: Sprint;
 
     @Field()
+    @prop({ required: true })
     public startDate: string;
 
     @Field(() => [Dedication], { nullable: true })
     public dedications?: Array<Dedication>;
 }
+
+export const ProjectModel = getModelForClass(Project);
