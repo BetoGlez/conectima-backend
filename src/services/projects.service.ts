@@ -60,13 +60,11 @@ export class ProjectsService {
     }
 
     public async getProjects(): Promise<Array<Project> | null> {
-        // TODO: return projects from the database
-        return this.projects;
+        return await ProjectModel.find();
     }
 
     public async getProject({ projectId }: ProjectIdInput): Promise<Project | null> {
-         // TODO: Do the search in the database
-         return this.projects.filter(project => project.id === projectId)[0];
+         return await ProjectModel.findById(projectId);
     }
 
     private isDateCurrentDateInRange(startDate: string, endDate: string): boolean {
