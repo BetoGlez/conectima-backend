@@ -4,6 +4,10 @@ export class ApiConstants {
 
     public static readonly DATE_FORMAT = "DD/MM/YYYY";
 
+    public static readonly MIN_PASSWORD_LENGTH = 8;
+    public static readonly AUTH_TOKEN_KEY = process.env.AUTH_TOKEN_KEY || "";
+    public static readonly AUTH_TOKEN_EXPIRE = process.env.AUTH_TOKEN_EXPIRE || "";
+
     public static readonly COLON_CHAR = ":";
     public static readonly COMMA_CHAR = ",";
     public static readonly DOT_CHAR = ".";
@@ -44,6 +48,10 @@ export class ApiConstants {
 
     public static readonly errorCodes = {
         EMPTY_FIELD: "emptyField",
-        INVALID_DATE: "invalidDate"
+        INVALID_DATE: "invalidDate",
+        INVALID_EMAIL: "invalidEmail",
+        SHORT_PASSWORD: "shortPassword",
+        USER_NOT_FOUND: "userNotFound",
+        INVALID_CREDENTIALS: "invalidCredentials"
     };
 }

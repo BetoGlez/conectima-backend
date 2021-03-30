@@ -11,6 +11,7 @@ dotenv.config();
 import { ApiConstants } from "./api.constants";
 import { ProjectResolvers } from "./graphql/resolvers/ProjectResolvers";
 import { SprintResolvers } from "./graphql/resolvers/SprintResolvers";
+import { UserResolvers } from "./graphql/resolvers/UserResolvers";
 import { formatError } from "./utils/error-format";
 
 const main = async () => {
@@ -19,7 +20,7 @@ const main = async () => {
 
         Container.reset();
         const schema = await buildSchema({
-            resolvers: [ ProjectResolvers, SprintResolvers ],
+            resolvers: [ ProjectResolvers, SprintResolvers, UserResolvers ],
             container: Container
         });
 
