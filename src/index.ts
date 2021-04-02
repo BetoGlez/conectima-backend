@@ -16,7 +16,7 @@ import { formatError } from "./utils/error-format";
 
 const main = async () => {
     try {
-        await mongoose.connect(ApiConstants.MONGO_DB_URI, { useNewUrlParser: true, useUnifiedTopology: true });
+        await mongoose.connect(ApiConstants.MONGO_DB_URI, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false });
 
         Container.reset();
         const schema = await buildSchema({

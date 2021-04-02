@@ -54,6 +54,7 @@ export class ApiConstants {
         USER_NOT_FOUND: "userNotFound",
         INVALID_CREDENTIALS: "invalidCredentials",
         DUPLICATED_PROJECT_NAME: "duplicatedProjectName",
-        ERROR_CONNECTING_SPREADSHEET: "errorConnectingSheet"
+        ERROR_CONNECTING_SPREADSHEET: "errorConnectingSheet",
+        NO_PROJECT_FOUND: "noProjectFound"
     };
 }

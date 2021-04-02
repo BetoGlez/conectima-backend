@@ -1,9 +1,12 @@
 import { Field, ID, ObjectType } from "type-graphql";
-import { prop, getModelForClass } from "@typegoose/typegoose";
+import { prop, getModelForClass, Ref, plugin, modelOptions, Severity } from "@typegoose/typegoose";
+import autopopulate from "mongoose-autopopulate";
 
 import { Dedication } from "./Dedication";
 import { Sprint } from "./Sprint";
 
+@plugin(autopopulate)
+@modelOptions({ options: { allowMixed: Severity.ALLOW }})
 @ObjectType()
 export class Project {
     @Field(() => ID)
@@ -17,17 +20,20 @@ export class Project {
     @prop({ required: true })
     public spreadSheetId: string;
 
-    @Field(() => [Sprint], { nullable: true })
-    public sprints?: Array<Sprint>;
-
-    @Field(() => Sprint, { nullable: true })
-    public activeSprint?: Sprint;
-
     @Field()
     @prop({ required: true })
     public startDate: string;
 
+    @Field(() => [Sprint], { nullable: true })
+    @prop({ ref: () => Sprint, autopopulate: true })
+    public sprints?: Array<Ref<Sprint>>;
+
+    @Field(() => Sprint, { nullable: true })
+    @prop({ ref: () => Sprint, autopopulate: true })
+    public activeSprint?: Ref<Sprint>;
+
     @Field(() => [Dedication], { nullable: true })
+    @prop()
     public dedications?: Array<Dedication>;
 }
 

@@ -1,4 +1,5 @@
 import { Field, Float, ObjectType, Root } from "type-graphql";
+import { prop } from "@typegoose/typegoose";
 
 import { ApiConstants } from "../../api.constants";
 import { Estimation } from "./Estimation";
@@ -10,21 +11,27 @@ export class Issue {
         return parent.title.substr(0, parent.title.indexOf(ApiConstants.COLON_CHAR));
     }
 
-    @Field()
+    @Field({ nullable: true })
+    @prop()
     public title: string;
 
-    @Field()
-    public responsible: string;
+    @Field({ nullable: true })
+    @prop()
+    public responsible?: string;
 
-    @Field(() => Estimation)
-    public estimation: Estimation;
+    @Field(() => Estimation, { nullable: true })
+    @prop()
+    public estimation?: Estimation;
 
-    @Field(() => Float)
-    public progress: number;
+    @Field(() => Float, { nullable: true })
+    @prop()
+    public progress?: number;
 
-    @Field(() => Float)
-    public priority: number;
+    @Field(() => Float, { nullable: true })
+    @prop()
+    public priority?: number;
 
-    @Field(() => Float)
-    public clientValue: number;
+    @Field(() => Float, { nullable: true })
+    @prop()
+    public clientValue?: number;
 }

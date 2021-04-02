@@ -1,40 +1,53 @@
 import { Field, Float, ObjectType } from "type-graphql";
+import { prop } from "@typegoose/typegoose";
 
 @ObjectType()
 export class SprintStatistics {
-    @Field(() => Float)
-    originalEstimationSp: number;
+    @Field(() => Float, { nullable: true })
+    @prop()
+    public originalEstimationSp?: number;
 
-    @Field(() => Float)
-    devEstimationSp: number;
+    @Field(() => Float, { nullable: true })
+    @prop()
+    public devEstimationSp?: number;
 
-    @Field(() => Float)
-    originalEstimationHours: number;
+    @Field(() => Float, { nullable: true })
+    @prop()
+    public originalEstimationHours?: number;
 
-    @Field(() => Float)
-    devEstimationHours: number;
+    @Field(() => Float, { nullable: true })
+    @prop()
+    public devEstimationHours?: number;
 
     @Field({nullable: true})
-    startDate: string;
+    @prop()
+    public startDate?: string;
 
     @Field({nullable: true})
-    releaseDate: string;
+    @prop()
+    public releaseDate?: string;
 
-    @Field(() => Float)
-    workHoursPerDay: number;
+    @Field(() => Float, { nullable: true })
+    @prop()
+    public workHoursPerDay?: number;
 
-    @Field(() => Float)
-    remainingWorkDays: number;
+    @Field(() => Float, { nullable: true })
+    @prop()
+    public remainingWorkDays?: number;
 
-    @Field(() => Float)
-    originalDeviationPercentage: number;
+    @Field(() => Float, { nullable: true })
+    @prop()
+    public originalDeviationPercentage?: number;
 
-    @Field(() => Float)
-    devDeviationPercentage: number;
+    @Field(() => Float, { nullable: true })
+    @prop()
+    public devDeviationPercentage?: number;
 
-    @Field(() => Float)
-    originalProgressPercentage: number;
+    @Field(() => Float, { nullable: true })
+    @prop()
+    public originalProgressPercentage?: number;
 
-    @Field(() => Float)
-    devProgressPercentage: number;
+    @Field(() => Float, { nullable: true })
+    @prop()
+    public devProgressPercentage?: number;
 }
