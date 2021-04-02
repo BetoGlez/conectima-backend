@@ -16,7 +16,9 @@ import { formatError } from "./utils/error-format";
 
 const main = async () => {
     try {
-        await mongoose.connect(ApiConstants.MONGO_DB_URI, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false });
+        await mongoose.connect(ApiConstants.MONGO_DB_URI, {
+            useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false
+        });
 
         Container.reset();
         const schema = await buildSchema({
@@ -24,7 +26,7 @@ const main = async () => {
             container: Container
         });
 
-        const apolloServer = new ApolloServer({ schema, formatError });
+        const apolloServer = new ApolloServer({ schema, formatError, context: ({ req }) => ({ req }) });
 
         const server = await apolloServer.listen({ port: ApiConstants.API_PORT });
         console.log(`Server running at ${server.url}`);

@@ -7,6 +7,7 @@ export class ApiConstants {
     public static readonly MIN_PASSWORD_LENGTH = 8;
     public static readonly AUTH_TOKEN_KEY = process.env.AUTH_TOKEN_KEY || "";
     public static readonly AUTH_TOKEN_EXPIRE = process.env.AUTH_TOKEN_EXPIRE || "";
+    public static readonly TOKEN_PREFIX = "Bearer ";
 
     public static readonly COLON_CHAR = ":";
     public static readonly COMMA_CHAR = ",";
