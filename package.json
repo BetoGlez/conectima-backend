@@ -1,5 +1,5 @@
 {
-    "name": "graphql-sheets",
+    "name": "conectima-backend",
     "version": "1.0.0",
     "description": "Conectima backend app",
     "main": "index.js",
