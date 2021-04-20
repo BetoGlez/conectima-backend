@@ -1,5 +1,5 @@
 export class ApiConstants {
-    public static readonly API_PORT = process.env.API_PORT || 5000;
+    public static readonly API_PORT = process.env.API_PORT || "";
     public static readonly MONGO_DB_URI = process.env.MONGO_DB_URI || "";
 
     public static readonly SHEETS_CONFIG = {
