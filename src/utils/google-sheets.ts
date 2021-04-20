@@ -1,6 +1,6 @@
 import { GoogleSpreadsheet, GoogleSpreadsheetWorksheet } from "google-spreadsheet";
 
-import sheetCredentials from "../keys/client_secret.json";
+import { ApiConstants } from "../api.constants";
 import { parseCommaNumber } from "./common-functions";
 
 export const isValidSheetId = async (sheetId: string): Promise<boolean> => {
@@ -9,7 +9,7 @@ export const isValidSheetId = async (sheetId: string): Promise<boolean> => {
 
 export const getSheetDocument = async (sheetId: string): Promise<GoogleSpreadsheet> => {
     const doc = new GoogleSpreadsheet(sheetId);
-    await doc.useServiceAccountAuth(sheetCredentials);
+    await doc.useServiceAccountAuth(ApiConstants.SHEETS_CONFIG);
     await doc.loadInfo();
     return doc;
 };

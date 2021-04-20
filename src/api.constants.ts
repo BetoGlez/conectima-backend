@@ -2,6 +2,19 @@ export class ApiConstants {
     public static readonly API_PORT = process.env.API_PORT || 5000;
     public static readonly MONGO_DB_URI = process.env.MONGO_DB_URI || "";
 
+    public static readonly SHEETS_CONFIG = {
+        type: process.env.SHEET_TYPE || "",
+        project_id: process.env.SHEET_PROJECT_ID || "",
+        private_key_id: process.env.SHEET_PRIVATE_KEY_ID || "",
+        private_key: process.env.SHEET_PRIVATE_KEY || "",
+        client_email: process.env.SHEET_CLIENT_EMAIL || "",
+        client_id: process.env.CLIENT_ID || "",
+        auth_uri: process.env.SHEET_AUTH_URI || "",
+        token_uri: process.env.SHEET_TOKEN_URI || "",
+        auth_provider_x509_cert_url: process.env.SHEET_AUTH_PROVIDER_CERT || "",
+        client_x509_cert_url: process.env.SHEET_CLIENT_CERT || ""
+    };
+
     public static readonly DATE_FORMAT = "DD/MM/YYYY";
 
     public static readonly MIN_PASSWORD_LENGTH = 8;
