@@ -1,4 +1,4 @@
-import { Field, ID, Int, ObjectType, Root } from "type-graphql";
+import { Field, ID, ObjectType, Root } from "type-graphql";
 import { prop, getModelForClass, modelOptions, Severity } from "@typegoose/typegoose";
 
 import { Dedication } from "./Dedication";
