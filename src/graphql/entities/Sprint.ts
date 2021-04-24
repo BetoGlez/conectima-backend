@@ -1,4 +1,4 @@
-import { Field, ID, ObjectType } from "type-graphql";
+import { Field, ID, Int, ObjectType, Root } from "type-graphql";
 import { prop, getModelForClass, modelOptions, Severity } from "@typegoose/typegoose";
 
 import { Dedication } from "./Dedication";
@@ -29,6 +29,11 @@ export class Sprint {
     @Field(() => [Dedication], { nullable: true })
     @prop()
     public dedications?: Array<Dedication>;
+
+    @Field()
+    public issueCount(@Root("_doc") parent: Sprint): number {
+        return parent.issues?.length || 0;
+    }
 }
 
 export const SprintModel = getModelForClass(Sprint);
