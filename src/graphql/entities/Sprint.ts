@@ -4,6 +4,7 @@ import { prop, getModelForClass, modelOptions, Severity } from "@typegoose/typeg
 import { Dedication } from "./Dedication";
 import { Issue } from "./Issue";
 import { SprintStatistics } from "./SprintStatistics";
+import { SpProgress } from "./SpProgress";
 
 @modelOptions({ options: { allowMixed: Severity.ALLOW }})
 @ObjectType()
@@ -29,6 +30,10 @@ export class Sprint {
     @Field(() => [Dedication], { nullable: true })
     @prop()
     public dedications?: Array<Dedication>;
+
+    @Field(() => [SpProgress], { nullable: true })
+    @prop()
+    public spsProgress?: Array<SpProgress>;
 
     @Field()
     public issueCount(@Root("_doc") parent: Sprint): number {

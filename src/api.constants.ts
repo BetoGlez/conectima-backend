@@ -28,6 +28,7 @@ export class ApiConstants {
 
     public static readonly MAX_ISSUES_PER_SPRINT = 50;
     public static readonly MAX_MEMBERS_PER_SPRINT = 20;
+    public static readonly MAX_SPRINT_DAYS = 20;
 
     public static readonly trackingSheet = {
         SPRINT_STATS_CELL_RANGE: "P1:R19",
@@ -58,6 +59,9 @@ export class ApiConstants {
         FIRST_DEDICATION_USER_CELL: "T1",
         FIRST_DEDICATION_CURRENT_HOURS_CELL: "U1",
         FIRST_DEDICATION_EXPECTED_HOURS_CELL: "V1",
+        SP_PER_DAY_CELL_RANGE: `P21:Q${ApiConstants.MAX_SPRINT_DAYS + 21}`,
+        FIRST_SP_PER_DAY_CELL : "Q21",
+        FIRST_DATE_IN_SPRINT_CELL : "P21"
     };
 
     public static readonly errorCodes = {

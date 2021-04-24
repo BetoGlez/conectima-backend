@@ -5,6 +5,7 @@ import { Sprint } from "../graphql/entities/Sprint";
 import { SprintStatistics } from "../graphql/entities/SprintStatistics";
 import { Dedication } from "../graphql/entities/Dedication";
 import { Issue } from "../graphql/entities/Issue";
+import { SpProgress } from "../graphql/entities/SpProgress";
 import { getCellNumber, getCellString, getNextCellInRow, getSheetDocument } from "../utils/google-sheets";
 import { ApiConstants } from "../api.constants";
 
@@ -26,11 +27,13 @@ export class SheetSprintsService {
         const sprintStats = await this.composeSprintStats(sheet);
         const sprintIssues = await this.composeSprintIssues(sheet);
         const sprintDedications = await this.composeSprintDedications(sheet);
+        const sprintSpsProgress = await this.composeSpPerDay(sheet);
         return {
             version: sheet.title,
             statistics: sprintStats,
             issues: sprintIssues,
-            dedications: sprintDedications
+            dedications: sprintDedications,
+            spsProgress: sprintSpsProgress
         } as Sprint;
     }
 
@@ -121,4 +124,27 @@ export class SheetSprintsService {
 
         return sprintDedications;
     }
+
+    private async composeSpPerDay(sheet: GoogleSpreadsheetWorksheet): Promise<Array<SpProgress>> {
+        await sheet.loadCells(ApiConstants.trackingSheet.SP_PER_DAY_CELL_RANGE);
+        const spsPerDay = new Array<SpProgress>();
+        let spPerDayCell = ApiConstants.trackingSheet.FIRST_SP_PER_DAY_CELL;
+        let sprintDateCell = ApiConstants.trackingSheet.FIRST_DATE_IN_SPRINT_CELL;
+        let isValidSpPerDay = true;
+        do {
+            spPerDayCell = getNextCellInRow(spPerDayCell);
+            const spPerDay = getCellNumber(sheet, spPerDayCell);
+            isValidSpPerDay = !!spPerDay && spPerDay > -1;
+            if (isValidSpPerDay) {
+                sprintDateCell = getNextCellInRow(sprintDateCell);
+                spsPerDay.push({
+                    date: getCellString(sheet, sprintDateCell),
+                    sp: spPerDay
+                });
+            }
+        } while (isValidSpPerDay && spsPerDay.length < ApiConstants.MAX_SPRINT_DAYS);
+
+        return spsPerDay;
+    }
+
 }
