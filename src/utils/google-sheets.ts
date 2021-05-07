@@ -15,11 +15,19 @@ export const getSheetDocument = async (sheetId: string): Promise<GoogleSpreadshe
 };
 
 export const getCellNumber = (sheet: GoogleSpreadsheetWorksheet, cell: string): number => {
-    let cellValue = sheet.getCellByA1(cell).value;
+    const cellValue = sheet.getCellByA1(cell).value;
+    let cellNumber = -1;
     if (typeof cellValue === "number") {
-        cellValue = cellValue.toFixed(2);
+        cellNumber = parseFloat(cellValue.toFixed(2));
+    } else if (typeof cellValue === "string") {
+        if (cellValue.indexOf(ApiConstants.PERCENT_CHAR) > -1) {
+            const numberWithoutPercentChar = cellValue.slice(0, cellValue.indexOf(ApiConstants.PERCENT_CHAR) - 1);
+            cellNumber = parseCommaNumber(numberWithoutPercentChar) / 100;
+        } else {
+            cellNumber = parseCommaNumber(cellValue);
+        }
     }
-    return cellValue ? parseCommaNumber(cellValue as string) : -1;
+    return cellNumber;
 };
 
 export const getCellString = (sheet: GoogleSpreadsheetWorksheet, cell: string): string => {

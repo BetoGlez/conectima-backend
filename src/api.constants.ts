@@ -25,6 +25,7 @@ export class ApiConstants {
     public static readonly COLON_CHAR = ":";
     public static readonly COMMA_CHAR = ",";
     public static readonly DOT_CHAR = ".";
+    public static readonly PERCENT_CHAR = "%";
 
     public static readonly MAX_ISSUES_PER_SPRINT = 50;
     public static readonly MAX_MEMBERS_PER_SPRINT = 20;
