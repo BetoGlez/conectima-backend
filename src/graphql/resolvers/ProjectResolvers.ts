@@ -25,12 +25,16 @@ export class ProjectResolvers {
         return await this.projectsSrv.getProject(projectIdInput);
     }
 
-    @Mutation(() => Project)
+    @Mutation(() => Project, { nullable: true })
     @UseMiddleware(isAuth)
     public async createProject(
         @Arg("createProjectInput") { name, spreadSheetId, startDate }: CreateProjectInput
-    ): Promise<Project> {
-        return await this.projectsSrv.createProject({ name, spreadSheetId, startDate } as Project);
+    ): Promise<Project | null> {
+        let newProject: Project | null = await this.projectsSrv.createProject({ name, spreadSheetId, startDate } as Project);
+        if (newProject.id) {
+            newProject = await this.projectsSrv.syncProject({projectId: newProject.id});
+        }
+        return newProject;
     }
 
     @Mutation(() => Project, { nullable: true })
