@@ -1,6 +1,6 @@
 {
     "name": "conectima-backend",
-    "version": "1.1.0",
+    "version": "1.1.1",
     "description": "Conectima backend app",
     "main": "index.js",
     "scripts": {
