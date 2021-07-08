@@ -62,6 +62,24 @@ export class ProjectsService {
         return await projectToSync.save();
     }
 
+    public async syncAllProjects(): Promise<Array<Project>> {
+        const existingProjects = await this.getProjects();
+        const syncAllProjectsPromises = new Array<Promise<Project | null>>();
+        let syncedProjects = new Array<Project>();
+        if (existingProjects && existingProjects.length > 0) {
+            existingProjects.forEach(project => {
+                if (project.id) {
+                    syncAllProjectsPromises.push(this.syncProject({projectId: project.id}));
+                }
+            });
+            const syncAllProjectsResult = await Promise.all(syncAllProjectsPromises);
+            if (syncAllProjectsResult) {
+                syncedProjects = syncAllProjectsResult.filter(project => !!project) as Array<Project>;
+            }
+        }
+        return syncedProjects;
+    }
+
     public async getProjects(): Promise<Array<Project> | null> {
         return await ProjectModel.find();
     }

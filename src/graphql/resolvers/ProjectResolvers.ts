@@ -42,4 +42,10 @@ export class ProjectResolvers {
     public async syncProject(@Arg("projectIdInput") projectIdInput: ProjectIdInput): Promise<Project | null> {
         return await this.projectsSrv.syncProject(projectIdInput);
     }
+
+    @Mutation(() => [Project], {nullable: true})
+    @UseMiddleware(isAuth)
+    public async syncAllProjects(): Promise<Array<Project>> {
+        return await this.projectsSrv.syncAllProjects();
+    }
 }
